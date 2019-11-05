@@ -7,10 +7,10 @@
       <!-- Login em conta já existente -->
       <span v-if="!cadastrar">
         <h2>Login</h2>
-        <input type="email" placeholder="E-mail">
-        <input type="password" placeholder="Senha">
+        <input type="email" placeholder="E-mail" v-model="email">
+        <input type="password" placeholder="Senha" v-model="password">
         <div class="botoes">
-          <button class="btn waves-effect waves-ligth col s6">Entrar</button>
+          <button class="btn waves-effect waves-ligth col s6" @click="login">Entrar</button>
           <button class="btn waves-effect waves-ligth orange col s6"
           @click="cadastrar = !cadastrar">Cadastre-se</button>
         </div>
@@ -33,6 +33,7 @@
   </login-template>
 </template>
 <script>
+import axios from 'axios'
 import LoginTemplate from '@/template/LoginTemplate'
 
 export default {
@@ -40,7 +41,21 @@ export default {
 
   data(){
     return{
-      cadastrar: false
+      cadastrar: false,
+      email: '',
+      password: ''
+    }
+  },
+
+  methods: {
+    login(){
+      let dados = {
+        email: this.email,
+        password: this.password
+      }
+      axios.post('http://127.0.0.1:8000/api/login', dados).then(res => {
+        console.log(res)
+      })
     }
   }
 }
