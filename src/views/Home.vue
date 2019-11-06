@@ -1,14 +1,14 @@
 <template>
-  <site-template>
+  <site-template @usuarioLogado="userLogado">
     <span slot="ladoEsquerdo">
       <div class="row valign-wrapper">
         <div class="col s3">
           <img src="https://materializecss.com/images/yuna.jpg" alt="" class="circle responsive-img">
         </div>
         <div class="col s9">
-          <h5>Jacks Bruno</h5>
+          <h5>{{ usuario.name }}</h5>
           <span class="black-text">
-            Aqui vai alguma coisa sobre o perfil da pessoa
+            {{ usuario.email }}
           </span>
         </div>
       </div>
@@ -40,7 +40,14 @@ export default {
 
   data(){
     return{
+      usuario: '',
       pensamento: ''
+    }
+  },
+
+  methods: {
+    userLogado(e){
+      this.usuario = e
     }
   }
 }

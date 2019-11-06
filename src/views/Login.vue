@@ -47,6 +47,11 @@ export default {
     }
   },
 
+  created(){
+    let user = localStorage.getItem('usuario')
+    if(user) this.$router.push('/')
+  },
+
   methods: {
     login(){
       let dados = {
@@ -55,6 +60,21 @@ export default {
       }
       axios.post('http://127.0.0.1:8000/api/login', dados).then(res => {
         console.log(res)
+        if(res.data.token){
+          /* Armazena informações do usuário no localStorage */
+          localStorage.setItem('usuario', JSON.stringify(res.data))
+          this.$router.push('/')
+        }else if(res.data.status == false){
+          /* Verifica se Login existe */
+          M.toast({html: 'Usuário ou Senha incorretos!', displayLength: 5000})
+        }else{
+          /* Verifica erros de validação */
+          if(res.data.email) M.toast({html: res.data.email, displayLength: 5000})
+          if(res.data.password) M.toast({html: res.data.password, displayLength: 5000})
+        }
+      }).catch(err => {
+        console.log(err)
+        M.toast({html: 'Erro de conecção, verifique sua internet ou tente de novo mais tarde.', displayLength: 6000})
       })
     }
   }
